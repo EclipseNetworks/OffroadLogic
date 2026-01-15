@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Technical Deep Dive | 2025 Ranger Wildtrak</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#10b981',    /* Emerald */
+              secondary: '#22d3ee',  /* Cyan */
+              tertiary: '#0ea5e9',   /* Blue */
+              dark: '#0f172a',
+              'dark-light': '#1e293b'
+            },
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+    <style>
+        .glass-card {
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .glass-card:hover {
+            border-color: rgba(16, 185, 129, 0.5);
+            background: rgba(255, 255, 255, 0.08);
+            transform: translateY(-5px);
+        }
+        .tech-tag {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(16, 185, 129, 0.2);
+            padding: 4px 12px;
+            border-radius: 99px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #10b981;
+        }
+    </style>
+</head>
+<body class="bg-dark text-white font-sans selection:bg-primary/30">
+
+    <nav class="bg-dark-light/80 backdrop-blur-md shadow-lg fixed w-full z-50 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center">
+                <a href="index.html" class="text-2xl font-bold flex items-center gap-1">
+                    <span class="text-primary">★》FORD</span> <span class="text-white">WILDTRAK《★</span>
+                </a>
+            </div>
+            <a href="index.html" class="text-xs font-bold uppercase tracking-widest hover:text-primary transition flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Back to Main
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative pt-32 pb-16 overflow-hidden">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-primary/10 to-transparent -z-10"></div>
+        <div class="container mx-auto px-6 text-center" data-aos="fade-up">
+            <h1 class="text-4xl md:text-6xl font-black mb-4 uppercase">Terrain <span class="text-primary">Dynamics</span></h1>
+            <p class="text-gray-400 max-w-2xl mx-auto uppercase tracking-[0.3em] text-[10px] font-bold">
+                A technical breakdown of the 2025 Ford Ranger Wildtrak Drive Systems
+            </p>
+        </div>
+    </section>
+
+    <section class="py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-xs font-bold text-primary tracking-[0.4em] uppercase mb-8 border-l-2 border-primary pl-4">System Components</h2>
+            <div class="grid grid-cols-1 gap-8 mb-20">
+                
+                <div class="glass-card p-8 rounded-[2rem]" data-aos="fade-up">
+                    <div class="flex flex-wrap md:flex-nowrap gap-8">
+                        <div class="w-full md:w-1/3">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="fas fa-feather text-primary text-2xl"></i>
+                                <h3 class="text-xl font-bold uppercase italic">Adaptive Comfort</h3>
+                            </div>
+                            <p class="text-sm text-gray-400">Electronic calibration of the chassis and steering to prioritize refined ride quality and reduced driver fatigue during long-haul travel.</p>
+                        </div>
+                        <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6 border-l border-white/10 md:pl-8">
+                            <div>
+                                <h4 class="text-primary text-[10px] font-bold uppercase mb-2">Variable Steering Assist</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">Adjusts the 'weight' of the steering wheel. High assistance at low speeds for parking; tighter response at high speeds for highway stability.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-primary text-[10px] font-bold uppercase mb-2">Pliant Damping Strategy</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">Software-controlled ESC intervention that allows the suspension to absorb road imperfections more naturally, rather than reacting stiffly.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[2rem]" data-aos="fade-up">
+                    <div class="flex flex-wrap md:flex-nowrap gap-8">
+                        <div class="w-full md:w-1/3">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="fas fa-anchor text-secondary text-2xl"></i>
+                                <h3 class="text-xl font-bold uppercase italic text-secondary">Grade Braking</h3>
+                            </div>
+                            <p class="text-sm text-gray-400">Uses the 10-speed transmission's logic to hold gears on descents, utilizing engine compression to slow the truck.</p>
+                        </div>
+                        <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6 border-l border-white/10 md:pl-8">
+                            <div>
+                                <h4 class="text-secondary text-[10px] font-bold uppercase mb-2">Thermal Management</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">By holding a lower gear, the system prevents 'brake fade'—where physical pads overheat and lose stopping power during heavy towing.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-secondary text-[10px] font-bold uppercase mb-2">Proactive Downshifting</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">The truck monitors brake pedal pressure and incline angle; if you tap the brakes on a hill, it automatically drops a gear for you.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="glass-card p-8 rounded-[2rem]" data-aos="fade-up">
+                    <div class="flex flex-wrap md:flex-nowrap gap-8">
+                        <div class="w-full md:w-1/3">
+                            <div class="flex items-center gap-4 mb-4">
+                                <i class="fas fa-link text-orange-500 text-2xl"></i>
+                                <h3 class="text-xl font-bold uppercase italic text-orange-500">Rear Diff Locked</h3>
+                            </div>
+                            <p class="text-sm text-gray-400">A mechanical locking mechanism in the rear axle that forces both wheels to rotate at the exact same speed.</p>
+                        </div>
+                        <div class="w-full md:w-2/3 grid grid-cols-1 sm:grid-cols-2 gap-6 border-l border-white/10 md:pl-8">
+                            <div>
+                                <h4 class="text-orange-500 text-[10px] font-bold uppercase mb-2">Maximum Traction Logic</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">Critical for off-roading; if one wheel is lifted off the ground, the opposite wheel still receives 50% of the axle's torque to keep you moving.</p>
+                            </div>
+                            <div>
+                                <h4 class="text-orange-500 text-[10px] font-bold uppercase mb-2">Surface Conflict</h4>
+                                <p class="text-xs text-gray-500 leading-relaxed">Only use on loose surfaces. Engaging on dry pavement will cause 'tire scrub' and significant driveline stress during turns.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <h2 class="text-xs font-bold text-primary tracking-[0.4em] uppercase mb-8 border-l-2 border-primary pl-4">Terrain Management Profile</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-6 rounded-3xl" data-aos="zoom-in">
+                    <h4 class="font-black text-primary uppercase mb-2">Normal</h4>
+                    <p class="text-xs text-gray-400 mb-4">The default setting for everyday driving. Uses 2H or 4A (on V6) with Adaptive Comfort active.</p>
+                    <div class="tech-tag">Standard Logic</div>
+                </div>
+                <div class="glass-card p-6 rounded-3xl" data-aos="zoom-in" data-aos-delay="100">
+                    <h4 class="font-black text-secondary uppercase mb-2">Tow / Haul</h4>
+                    <p class="text-xs text-gray-400 mb-4">Holds gears longer and engages Engine Grade Braking. Optimal for heavy trailers or payloads.</p>
+                    <div class="tech-tag !text-secondary !border-secondary/20 !bg-secondary/10">Engine Braking On</div>
+                </div>
+                <div class="glass-card p-6 rounded-3xl" data-aos="zoom-in" data-aos-delay="200">
+                    <h4 class="font-black text-orange-500 uppercase mb-2">Mud / Ruts</h4>
+                    <p class="text-xs text-gray-400 mb-4">Automatically engages 4H and the Rear Diff Lock. Traction control is tuned to allow wheel spin to clear mud.</p>
+                    <div class="tech-tag !text-orange-500 !border-orange-500/20 !bg-orange-500/10">Rear Diff Locked</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center opacity-40">
+        <p class="text-[10px] text-gray-500 tracking-[0.5em] uppercase">
+            Built for <span class="text-primary">★》Xclipse Networks《★</span>
+        </p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
