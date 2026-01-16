@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Driveline Logic | Offroad Logic</title>
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#10b981',    /* Emerald */
+              secondary: '#22d3ee',  /* Cyan */
+              tertiary: '#0ea5e9',   /* Blue */
+              dark: '#0f172a',
+              'dark-light': '#1e293b'
+            },
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      .glass-card {
+        background: rgba(255, 255, 255, 0.03);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-card:hover {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(16, 185, 129, 0.4);
+        transform: translateY(-5px);
+      }
+      .glow-border {
+        position: relative;
+      }
+      .glow-border::after {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        background: linear-gradient(135deg, #10b981, #22d3ee);
+        z-index: -1;
+        border-radius: inherit;
+        opacity: 0.2;
+      }
+    </style>
+</head>
+<body class="bg-dark text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+
+    <nav class="bg-dark-light/80 backdrop-blur-md shadow-lg fixed w-full z-50 border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold flex items-center gap-2">
+                <span class="text-primary font-black italic">★》OFFROAD</span> 
+                <span class="text-white font-light tracking-widest uppercase">LOGIC《★</span>
+            </a>
+            <a href="index.html" class="text-[10px] font-black uppercase tracking-[0.2em] hover:text-primary transition flex items-center gap-2">
+                <i class="fas fa-arrow-left"></i> Main Site
+            </a>
+        </div>
+    </nav>
+
+    <section class="relative pt-48 pb-20 overflow-hidden text-center">
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-primary/10 to-transparent -z-10"></div>
+        <div class="container mx-auto px-6" data-aos="fade-up">
+            <h1 class="text-4xl md:text-7xl font-black mb-4 uppercase italic">Mechanical <span class="text-primary">Driveline</span></h1>
+            <p class="text-gray-400 max-w-2xl mx-auto text-[10px] font-bold uppercase tracking-[0.6em]">
+                Transfer Case States & Torque Distribution Logic
+            </p>
+        </div>
+    </section>
+
+    <section class="py-12 relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                
+                <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-right">
+                    <div class="flex items-center gap-5 mb-6">
+                        <div class="text-5xl font-black text-primary/30">2H</div>
+                        <div>
+                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-primary">High Range 2WD</h3>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Seal Surface Optimization</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                        Power is delivered exclusively to the rear axle. The front hubs are disconnected to reduce mechanical drag and parasitic loss, maximizing fuel efficiency and minimizing driveline vibration on bitumen.
+                    </p>
+                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-primary">
+                        <span class="text-[10px] font-bold text-primary uppercase block mb-1">Logic Application</span>
+                        <p class="text-[10px] text-gray-500">Standard highway cruising and dry city driving.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-left">
+                    <div class="flex items-center gap-5 mb-6">
+                        <div class="text-5xl font-black text-secondary/30">4A</div>
+                        <div>
+                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-secondary">4WD Automatic</h3>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Active Torque On-Demand</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                        Utilises an electronically controlled clutch to monitor wheel slip. Torque is sent to the front wheels only when needed. Safe for all surfaces, including high-traction sealed roads.
+                    </p>
+                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-secondary">
+                        <span class="text-[10px] font-bold text-secondary uppercase block mb-1">Logic Application</span>
+                        <p class="text-[10px] text-gray-500">Variable weather, wet roads, and light gravel tracks.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-right">
+                    <div class="flex items-center gap-5 mb-6">
+                        <div class="text-5xl font-black text-tertiary/30">4H</div>
+                        <div>
+                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-tertiary">High Range 4WD</h3>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Locked 50:50 Distribution</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                        Mechanically locks the front and rear driveshafts together. This ensures a consistent 50% torque split between axles. Not for use on pavement as it causes driveline "binding" during turns.
+                    </p>
+                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-tertiary">
+                        <span class="text-[10px] font-bold text-tertiary uppercase block mb-1">Logic Application</span>
+                        <p class="text-[10px] text-gray-500">Snow, loose dirt, and consistent off-road surfaces.</p>
+                    </div>
+                </div>
+
+                <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-left">
+                    <div class="flex items-center gap-5 mb-6">
+                        <div class="text-5xl font-black text-orange-500/30">4L</div>
+                        <div>
+                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-orange-500">Low Range 4WD</h3>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Torque Multiplication Logic</p>
+                        </div>
+                    </div>
+                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
+                        Engages a secondary gear set in the transfer case to multiply torque by a ratio (typically 2.5:1 or higher). Used for high-torque, low-speed maneuvers. Requires vehicle to be in Neutral to engage.
+                    </p>
+                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-orange-500">
+                        <span class="text-[10px] font-bold text-orange-500 uppercase block mb-1">Logic Application</span>
+                        <p class="text-[10px] text-gray-500">Extreme rock crawling, heavy recovery, and steep inclines.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20">
+        <div class="max-w-4xl mx-auto px-6">
+            <div class="glass-card p-8 border-red-500/20 bg-red-500/5 rounded-3xl" data-aos="zoom-in">
+                <div class="flex items-center gap-4 mb-4">
+                    <i class="fas fa-triangle-exclamation text-red-500"></i>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-red-500">Technical Alert: Driveline Bind</h4>
+                </div>
+                <p class="text-xs text-gray-500 leading-relaxed">
+                    Operating in <strong class="text-white">4H</strong> or <strong class="text-white">4L</strong> on high-traction surfaces (dry bitumen) forces wheels to rotate at the same speed. During turns, inner and outer wheels must travel different distances; if locked, the drivetrain absorbs this stress, leading to potential gear failure and tire scrubbing.
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-12 text-center opacity-50">
+        <p class="text-[10px] text-gray-500 tracking-[0.6em] uppercase">
+            Developed for <span class="text-primary font-bold">OFFROADLOGIC.COM.AU</span>
+        </p>
+    </footer>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+    </script>
+</body>
+</html>
