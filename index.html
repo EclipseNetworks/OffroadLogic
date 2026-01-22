@@ -29,12 +29,37 @@
   </script>
 
   <style>
+    /* Animated Grid Background */
     body { 
-      background-color: #05080a; 
+      background-color: #05080a;
+      overflow-x: hidden;
+      position: relative;
+    }
+
+    /* Grid Overlay with Animation */
+    .grid-bg {
+      position: fixed;
+      inset: 0;
       background-image: 
-        linear-gradient(rgba(16, 185, 129, 0.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(16, 185, 129, 0.03) 1px, transparent 1px);
-      background-size: 35px 35px;
+        linear-gradient(rgba(16, 185, 129, 0.05) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(16, 185, 129, 0.05) 1px, transparent 1px);
+      background-size: 50px 50px;
+      mask-image: radial-gradient(circle at center, black, transparent 80%);
+      animation: gridMove 20s linear infinite;
+      z-index: -1;
+    }
+
+    @keyframes gridMove {
+      from { background-position: 0 0; }
+      to { background-position: 50px 50px; }
+    }
+
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: -1;
+      opacity: 0.4;
     }
 
     .glass-terminal {
@@ -57,7 +82,6 @@
       box-shadow: 0 15px 40px -10px rgba(16, 185, 129, 0.2);
     }
 
-    /* Offroad logic specific rugged texture */
     .offroad-texture::after {
       content: "";
       position: absolute;
@@ -83,6 +107,9 @@
 </head>
 
 <body class="text-white font-sans min-h-screen flex flex-col items-center justify-center p-4">
+
+<div class="grid-bg"></div>
+<canvas id="particleCanvas"></canvas>
 
 <div id="glow-container" class="fixed inset-0 -z-10 overflow-hidden">
   <div id="glow-1" class="absolute top-1/4 left-1/4 w-[400px] h-[400px] bg-primary/10 rounded-full blur-[100px]"></div>
@@ -153,7 +180,6 @@
           </div>
         </div>
       </div>
-
     </div>
 
     <div class="flex justify-center gap-12 mt-20 pt-10 border-t border-white/5">
@@ -161,7 +187,6 @@
       <a href="https://www.instagram.com/xclp_leeroy" target="_blank" class="text-gray-600 hover:text-white transition-all transform hover:-translate-y-1"><i class="fab fa-instagram text-2xl"></i></a>
       <a href="https://www.tiktok.com/@xclp.leeroy" target="_blank" class="text-gray-600 hover:text-white transition-all transform hover:-translate-y-1"><i class="fab fa-tiktok text-2xl"></i></a>
     </div>
-
   </div>
 
   <footer class="mt-12 text-center pb-10">
@@ -172,6 +197,60 @@
 </main>
 
 <script>
+/* Particle Background Logic */
+const canvas = document.getElementById('particleCanvas');
+const ctx = canvas.getContext('2d');
+
+let particles = [];
+const particleCount = 40;
+
+function initCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+
+class Particle {
+  constructor() {
+    this.reset();
+  }
+  reset() {
+    this.x = Math.random() * canvas.width;
+    this.y = Math.random() * canvas.height;
+    this.size = Math.random() * 2 + 1;
+    this.speedY = Math.random() * 1 + 0.5;
+    this.opacity = Math.random() * 0.5;
+  }
+  update() {
+    this.y += this.speedY;
+    if (this.y > canvas.height) this.reset();
+  }
+  draw() {
+    ctx.fillStyle = `rgba(16, 185, 129, ${this.opacity})`;
+    ctx.fillRect(this.x, this.y, 1, 15); // Tactical "falling dash" look
+  }
+}
+
+function createParticles() {
+  for (let i = 0; i < particleCount; i++) {
+    particles.push(new Particle());
+  }
+}
+
+function animate() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  particles.forEach(p => {
+    p.update();
+    p.draw();
+  });
+  requestAnimationFrame(animate);
+}
+
+window.addEventListener('resize', initCanvas);
+initCanvas();
+createParticles();
+animate();
+
+/* Mouse Movement Glow */
 document.addEventListener('mousemove', (e) => {
   const moveX = (e.clientX / window.innerWidth - 0.5) * 35;
   const moveY = (e.clientY / window.innerHeight - 0.5) * 35;
