@@ -1,19 +1,17 @@
-const CACHE_NAME = 'offroad-logic-v3';
+const CACHE_NAME = 'offroad-logic-v3'; // Increment this (v4, v5...) to force client refresh
 
 const ASSETS = [
   './',
   './index.html',
   './home.html',
   './driveline.html',
-  './Drive Modes.html', // Fixed: Matches your uploaded filename
-  './Terrain Dynamics.html', // Fixed: Matches your uploaded filename
+  './Drive Modes.html',
+  './Terrain Dynamics.html',
+  './toyota.html',
   './test.html',
-  './old-index.html',
   './xclipsehub.png',
   './xclipsehub2.png',
-  './xclipsenetworks-removebg-preview.png',
   './xclipsenetworks.png',
-  // Essential External Styles
   'https://cdn.tailwindcss.com',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css',
   'https://unpkg.com/aos@2.3.1/dist/aos.css',
@@ -21,15 +19,25 @@ const ASSETS = [
 ];
 
 self.addEventListener('install', (event) => {
+  self.skipWaiting(); // Force the new service worker to take over immediately
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
-      // Map through assets so one failure doesn't stop the whole installation
       return Promise.all(
         ASSETS.map(url => {
           return cache.add(url).catch(err => console.log('Skipped file:', url));
         })
       );
     })
+  );
+});
+
+self.addEventListener('activate', (event) => {
+  event.waitUntil(
+    caches.keys().then((keys) => {
+      return Promise.all(
+        keys.filter((key) => key !== CACHE_NAME).map((key) => caches.delete(key))
+      );
+    }).then(() => self.clients.claim()) // Take control of all open tabs immediately
   );
 });
 
