@@ -5,17 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>★》XCLIPSE HUB | Portal《★</title>
 
-
   <link rel="manifest" href="/manifest.json">
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js');
-    });
-  }
-</script>
   <link rel="icon" href="xclipsehub.png">
+
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
@@ -25,10 +17,7 @@
     tailwind.config = {
       theme: {
         extend: {
-          colors: {
-            primary: '#10b981',
-            dark: '#05080a',
-          },
+          colors: { primary: '#10b981', dark: '#05080a' },
           fontFamily: {
             sans: ['Montserrat', 'sans-serif'],
             mono: ['JetBrains Mono', 'monospace']
@@ -39,16 +28,9 @@
   </script>
 
   <style>
-    body { 
-      background-color: #05080a;
-      overflow-x: hidden;
-      margin: 0;
-    }
-
-    /* Moving Grid */
+    body { background-color: #05080a; overflow-x: hidden; margin: 0; }
     .grid-bg {
-      position: fixed;
-      inset: 0;
+      position: fixed; inset: 0;
       background-image: 
         linear-gradient(rgba(16, 185, 129, 0.04) 1px, transparent 1px),
         linear-gradient(90deg, rgba(16, 185, 129, 0.04) 1px, transparent 1px);
@@ -57,61 +39,42 @@
       animation: gridMove 30s linear infinite;
       z-index: -1;
     }
-
-    @keyframes gridMove {
-      from { background-position: 0 0; }
-      to { background-position: 60px 60px; }
-    }
-
-    /* Digital Rain Canvas */
-    #rainCanvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: -1;
-      pointer-events: none;
-    }
-
+    @keyframes gridMove { from { background-position: 0 0; } to { background-position: 60px 60px; } }
+    #rainCanvas { position: fixed; top: 0; left: 0; z-index: -1; pointer-events: none; }
+    
     .glass-terminal {
       background: rgba(8, 14, 18, 0.94);
       backdrop-filter: blur(30px);
       border: 1px solid rgba(16, 185, 129, 0.25);
       box-shadow: 0 0 80px rgba(0, 0, 0, 1), inset 0 0 20px rgba(16, 185, 129, 0.05);
     }
-
+    
     .sector-card {
       background: rgba(255, 255, 255, 0.01);
       border: 1px solid rgba(255, 255, 255, 0.05);
       transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
     }
-
+    
     .sector-card:hover {
       background: rgba(16, 185, 129, 0.08);
       border-color: #10b981;
       transform: translateY(-10px) scale(1.02);
       box-shadow: 0 20px 40px -15px rgba(16, 185, 129, 0.3);
     }
+    
+    .text-glow { text-shadow: 0 0 15px rgba(16, 185, 129, 0.8); }
+    .status-blink { animation: blink 1.5s infinite; }
+    @keyframes blink { 0%, 100% { opacity: 1; filter: brightness(1.2); } 50% { opacity: 0.4; filter: brightness(0.8); } }
 
-    .offroad-texture::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background-image: url('https://www.transparenttextures.com/patterns/carbon-fibre.png');
-      opacity: 0.1;
-      pointer-events: none;
+    /* --- Offline Status Bar Styles --- */
+    #offline-indicator { 
+      transform: translateY(100%); 
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); 
     }
-
-    .text-glow {
-      text-shadow: 0 0 15px rgba(16, 185, 129, 0.8);
-    }
-
-    .status-blink {
-      animation: blink 1.5s infinite;
-    }
-
-    @keyframes blink {
-      0%, 100% { opacity: 1; filter: brightness(1.2); }
-      50% { opacity: 0.4; filter: brightness(0.8); }
+    .show-offline { transform: translateY(0) !important; }
+    .offline-mode-active .text-primary { 
+      color: #ef4444 !important; 
+      text-shadow: 0 0 15px rgba(239, 68, 68, 0.8) !important; 
     }
   </style>
 </head>
@@ -155,7 +118,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-10 max-w-4xl mx-auto">
       
-      <a href="home.html" class="sector-card offroad-texture group p-10 rounded-[2.5rem] relative overflow-hidden">
+      <a href="home.html" class="sector-card group p-10 rounded-[2.5rem] relative overflow-hidden">
         <div class="relative z-10">
           <div class="flex items-center gap-5 mb-6">
             <div class="w-16 h-16 rounded-2xl bg-primary/15 border border-primary/30 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-dark transition-all duration-500 shadow-lg">
@@ -210,13 +173,41 @@
   </footer>
 </main>
 
+<div id="offline-indicator" class="fixed bottom-0 left-0 w-full z-[100]">
+    <div class="bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.4em] py-2 px-6 flex items-center justify-center gap-3 shadow-2xl">
+        <i class="fas fa-plane-slash animate-pulse"></i>
+        <span>Offline Mode: Accessing Cached Tactical Data</span>
+    </div>
+</div>
+
 <script>
-/* Digital Rain System */
+/* 1. Service Worker Registration */
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js');
+  });
+}
+
+/* 2. Offline Connectivity Monitoring Logic */
+const indicator = document.getElementById('offline-indicator');
+function updateStatus() {
+  if (navigator.onLine) {
+    indicator.classList.remove('show-offline');
+    document.body.classList.remove('offline-mode-active');
+  } else {
+    indicator.classList.add('show-offline');
+    document.body.classList.add('offline-mode-active');
+  }
+}
+window.addEventListener('online', updateStatus);
+window.addEventListener('offline', updateStatus);
+updateStatus();
+
+/* 3. Digital Rain System */
 const canvas = document.getElementById('rainCanvas');
 const ctx = canvas.getContext('2d');
-
 let particles = [];
-const particleCount = 60; // Increased density
+const particleCount = 60; 
 
 function resize() {
   canvas.width = window.innerWidth;
@@ -224,9 +215,7 @@ function resize() {
 }
 
 class RainDrop {
-  constructor() {
-    this.init();
-  }
+  constructor() { this.init(); }
   init() {
     this.x = Math.random() * canvas.width;
     this.y = Math.random() * -canvas.height;
@@ -244,17 +233,13 @@ class RainDrop {
   }
   update() {
     this.y += this.speed;
-    if (this.y > canvas.height) {
-      this.init();
-    }
+    if (this.y > canvas.height) this.init();
     this.draw();
   }
 }
 
 function createRain() {
-  for (let i = 0; i < particleCount; i++) {
-    particles.push(new RainDrop());
-  }
+  for (let i = 0; i < particleCount; i++) { particles.push(new RainDrop()); }
 }
 
 function animate() {
@@ -268,7 +253,7 @@ resize();
 createRain();
 animate();
 
-/* Parallax Glow */
+/* 4. Parallax Glow */
 document.addEventListener('mousemove', (e) => {
   const x = (e.clientX / window.innerWidth - 0.5) * 40;
   const y = (e.clientY / window.innerHeight - 0.5) * 40;
@@ -277,5 +262,41 @@ document.addEventListener('mousemove', (e) => {
 });
 </script>
 
+
+<div id="offline-indicator" class="fixed bottom-0 left-0 w-full z-[100] transform translate-y-full transition-transform duration-500">
+    <div class="bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.4em] py-2 px-6 flex items-center justify-center gap-3 shadow-2xl">
+        <i class="fas fa-plane-slash animate-pulse"></i>
+        <span>Offline Mode: Accessing Cached Tactical Data</span>
+    </div>
+</div>
+
+<style>
+    .show-offline { transform: translateY(0) !important; }
+    .offline-mode-active .text-primary { color: #ef4444 !important; }
+</style>
+
+<script>
+    /* Service Worker Registration */
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js');
+      });
+    }
+
+    /* Connectivity Monitoring */
+    const indicator = document.getElementById('offline-indicator');
+    function updateStatus() {
+      if (navigator.onLine) {
+        indicator.classList.remove('show-offline');
+        document.body.classList.remove('offline-mode-active');
+      } else {
+        indicator.classList.add('show-offline');
+        document.body.classList.add('offline-mode-active');
+      }
+    }
+    window.addEventListener('online', updateStatus);
+    window.addEventListener('offline', updateStatus);
+    updateStatus();
+</script>
 </body>
 </html>
