@@ -6,6 +6,16 @@
     <title>Offroad Logic | Universal 4x4 Technical Guide</title>
 
     <link rel="icon" type="image/x-icon" href="xclipsenetworks-removebg-preview.png">
+
+    <link rel="manifest" href="/manifest.json">
+
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js');
+    });
+  }
+</script>
     
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
