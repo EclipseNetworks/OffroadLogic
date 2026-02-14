@@ -1,14 +1,19 @@
 {
-  "name": "Offroad Logic",
-  "short_name": "OffroadLogic",
+  "name": "XCLIPSE HUB",
+  "short_name": "XclipseHub",
   "start_url": "/index.html",
   "display": "standalone",
-  "background_color": "#064e3b",
+  "background_color": "#05080a",
   "theme_color": "#10b981",
   "icons": [
     {
-      "src": "xclipsenetworks-removebg-preview.png",
+      "src": "xclipsehub.png",
       "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "xclipsenetworks-removebg-preview.png",
+      "sizes": "512x512",
       "type": "image/png"
     }
   ]
