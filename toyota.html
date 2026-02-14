@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Toyota Tactical Intelligence | Offroad Logic</title>
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="xclipsehub2.png">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: { primary: '#10b981', dark: '#05080a', toyota: '#eb0a1e' },
+            fontFamily: { sans: ['Montserrat', 'sans-serif'], mono: ['JetBrains Mono', 'monospace'] }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      body::before {
+        content: " "; display: block; position: fixed; top: 0; left: 0; bottom: 0; right: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%);
+        z-index: 9999; background-size: 100% 4px; pointer-events: none; opacity: 0.3;
+      }
+      .glass-card {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(16, 185, 129, 0.1);
+      }
+      #offline-indicator { transform: translateY(100%); transition: transform 0.5s ease; }
+      .show-offline { transform: translateY(0) !important; }
+      .tire-pill { background: rgba(16, 185, 129, 0.1); border: 1px solid rgba(16, 185, 129, 0.2); color: #10b981; font-size: 9px; padding: 2px 8px; border-radius: 4px; font-weight: bold; }
+    </style>
+</head>
+<body class="bg-dark text-white font-sans overflow-x-hidden">
+
+    <nav class="bg-dark/90 backdrop-blur-md fixed w-full z-[100] border-b border-primary/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold italic tracking-tighter">
+                <span class="text-primary font-black">★》TOYOTA</span> <span class="text-white font-light uppercase tracking-widest">LOGIC《★</span>
+            </a>
+            <div class="flex gap-6 items-center">
+                <span id="system-check" class="text-[8px] font-mono text-primary animate-pulse uppercase tracking-widest hidden md:block">System Secure</span>
+                <a href="home.html" class="text-[10px] font-black uppercase tracking-[0.3em] hover:text-primary transition">
+                    <i class="fas fa-arrow-left mr-2"></i> Hub
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-[40vh] flex items-center justify-center pt-24">
+        <div class="absolute inset-0 bg-gradient-to-b from-toyota/10 via-dark to-dark -z-10"></div>
+        <div class="text-center px-6" data-aos="zoom-out">
+            <h1 class="text-6xl md:text-8xl font-black uppercase italic tracking-tighter">Toyota <span class="text-primary">Intelligence</span></h1>
+            <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.8em]">Multi-Terrain Management & Sizing Data</p>
+        </div>
+    </section>
+
+    <section class="py-12 max-w-6xl mx-auto px-6">
+        <h2 class="text-xs font-black text-primary tracking-[0.5em] uppercase mb-8 border-l-4 border-primary pl-4">Tactical Drive States</h2>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 mb-16">
+            <div class="glass-card p-6 rounded-2xl" data-aos="fade-up">
+                <h4 class="font-bold uppercase italic text-sm mb-2 text-primary">MTS: Sand</h4>
+                <p class="text-[10px] text-gray-500 leading-relaxed">Disables TRC (Traction Control) to prevent engine bog-down. Optimizes gear hunting for consistent high-RPM beach transit.</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl" data-aos="fade-up" data-aos-delay="100">
+                <h4 class="font-bold uppercase italic text-sm mb-2 text-secondary">A-TRC Logic</h4>
+                <p class="text-[10px] text-gray-500 leading-relaxed">Active Traction Control applies brake force to spinning wheels, transferring torque to those with contact. Effective in cross-axle mogul situations.</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl" data-aos="fade-up" data-aos-delay="200">
+                <h4 class="font-bold uppercase italic text-sm mb-2 text-orange-500">Crawl Control</h4>
+                <p class="text-[10px] text-gray-500 leading-relaxed">Maintains a constant low speed without driver pedal input. Essential for self-extraction in soft sand or deep mud.</p>
+            </div>
+            <div class="glass-card p-6 rounded-2xl" data-aos="fade-up" data-aos-delay="300">
+                <h4 class="font-bold uppercase italic text-sm mb-2 text-blue-400">DAC System</h4>
+                <p class="text-[10px] text-gray-500 leading-relaxed">Downhill Assist Control manages speed on steep technical descents. Prevents wheel lock-up while maintaining steering control.</p>
+            </div>
+        </div>
+
+        <h2 class="text-xs font-black text-primary tracking-[0.5em] uppercase mb-8 border-l-4 border-primary pl-4">Tactical Tire Matrix</h2>
+        <div class="space-y-6">
+            <div class="glass-card p-8 rounded-[2rem]" data-aos="fade-right">
+                <div class="flex flex-col md:flex-row justify-between items-center gap-6">
+                    <div class="md:w-1/2">
+                        <h4 class="text-xl font-black uppercase italic mb-2">Recommended Sizing</h4>
+                        <p class="text-xs text-gray-400">Optimizing for clearance without excessive driveline stress.</p>
+                    </div>
+                    <div class="md:w-1/2 grid grid-cols-2 gap-4">
+                        <div class="bg-dark p-4 rounded-xl border border-white/5">
+                            <span class="block text-primary text-[10px] font-bold uppercase">Standard (31")</span>
+                            <span class="font-mono text-sm">265/65 R17</span>
+                        </div>
+                        <div class="bg-dark p-4 rounded-xl border border-primary/20">
+                            <span class="block text-primary text-[10px] font-bold uppercase">Aggressive (33")</span>
+                            <span class="font-mono text-sm">285/70 R17</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <div class="glass-card p-8 rounded-[2rem] text-center" data-aos="zoom-in">
+                    <i class="fas fa-tachometer-alt text-primary mb-4"></i>
+                    <h5 class="font-bold uppercase italic text-sm mb-1">Highway / Daily</h5>
+                    <p class="text-2xl font-black mb-2">35 - 38 PSI</p>
+                    <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Optimal fuel economy and tread life on sealed roads.</p>
+                </div>
+                <div class="glass-card p-8 rounded-[2rem] text-center border-yellow-500/20" data-aos="zoom-in" data-aos-delay="100">
+                    <i class="fas fa-umbrella-beach text-yellow-500 mb-4"></i>
+                    <h5 class="font-bold uppercase italic text-sm mb-1 text-yellow-500">Beach / Soft Sand</h5>
+                    <p class="text-2xl font-black mb-2">15 - 18 PSI</p>
+                    <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Maximizes footprint (floatation) to prevent digging in.</p>
+                </div>
+                <div class="glass-card p-8 rounded-[2rem] text-center border-blue-500/20" data-aos="zoom-in" data-aos-delay="200">
+                    <i class="fas fa-tint text-blue-500 mb-4"></i>
+                    <h5 class="font-bold uppercase italic text-sm mb-1 text-blue-500">Muddy / Rugged</h5>
+                    <p class="text-2xl font-black mb-2">22 - 25 PSI</p>
+                    <p class="text-[9px] text-gray-500 uppercase tracking-widest leading-relaxed">Balances traction and protection against rim damage/puncture.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="offline-indicator" class="fixed bottom-0 left-0 w-full z-[1000]">
+        <div class="bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.4em] py-3 text-center">
+            System Offline // Toyota Tactical Database Active
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+        
+        function updateOfflineStatus() {
+            const indicator = document.getElementById('offline-indicator');
+            if (navigator.onLine) { indicator.classList.remove('show-offline'); } 
+            else { indicator.classList.add('show-offline'); }
+        }
+        window.addEventListener('online', updateOfflineStatus);
+        window.addEventListener('offline', updateOfflineStatus);
+        updateOfflineStatus();
+
+        if ('serviceWorker' in navigator) { window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); }); }
+    </script>
+</body>
+</html>

@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Offroad Logic | Tactical Off-Road Intelligence</title>
+
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" type="image/x-icon" href="xclipsehub2.png">
+    
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              primary: '#10b981',    /* Emerald */
+              secondary: '#22d3ee',  /* Cyan */
+              dark: '#05080a',
+              'dark-light': '#0f172a'
+            },
+            fontFamily: {
+              sans: ['Montserrat', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace']
+            }
+          }
+        }
+      }
+    </script>
+
+    <style>
+      /* Tactical Scanline Overlay */
+      body::before {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0; left: 0; bottom: 0; right: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+        z-index: 9999;
+        background-size: 100% 4px, 3px 100%;
+        pointer-events: none;
+        opacity: 0.4;
+      }
+
+      .glass-card {
+        background: rgba(15, 23, 42, 0.8);
+        backdrop-filter: blur(12px);
+        border: 1px solid rgba(16, 185, 129, 0.1);
+        transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      .glass-card:hover {
+        background: rgba(16, 185, 129, 0.05);
+        border-color: rgba(16, 185, 129, 0.5);
+        transform: translateY(-5px);
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.1);
+      }
+
+      .gradient-text {
+        background: linear-gradient(135deg, #10b981 0%, #34d399 50%, #059669 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+
+      .skew-btn {
+        clip-path: polygon(10% 0, 100% 0, 90% 100%, 0 100%);
+        transition: all 0.3s ease;
+      }
+
+      #offline-indicator { transform: translateY(100%); transition: transform 0.5s ease; }
+      .show-offline { transform: translateY(0) !important; }
+    </style>
+</head>
+<body class="bg-dark text-white font-sans selection:bg-primary/30 overflow-x-hidden">
+
+    <div class="fixed top-24 right-6 z-50 hidden md:block" data-aos="fade-left">
+        <div class="glass-card p-4 rounded-xl border-l-4 border-primary">
+            <div class="flex items-center gap-3 mb-1">
+                <div id="online-dot" class="w-2 h-2 rounded-full bg-primary animate-ping"></div>
+                <span class="text-[8px] font-black uppercase tracking-widest text-gray-500">System Status</span>
+            </div>
+            <div id="network-text" class="text-[10px] font-mono text-primary font-bold uppercase">Stable // 5G_TAC</div>
+            <div id="vehicle-stat" class="text-[8px] font-mono text-gray-500 mt-2 uppercase">No active scan</div>
+        </div>
+    </div>
+
+    <nav class="bg-dark/90 backdrop-blur-md fixed w-full z-[100] border-b border-primary/10">
+        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+            <a href="index.html" class="text-xl font-bold italic tracking-tighter group">
+                <span class="text-primary font-black group-hover:text-white transition-colors">★》OFFROAD</span> 
+                <span class="text-white font-light uppercase tracking-widest group-hover:text-primary transition-colors">LOGIC《★</span>
+            </a>
+            <div class="hidden md:flex gap-10 text-[10px] font-black uppercase tracking-[0.3em]">
+                <a href="#info" class="hover:text-primary transition">Database</a>
+                <a href="driveline.html" class="hover:text-primary transition">Driveline</a>
+                <a href="Drive Modes.html" class="hover:text-primary transition">Modes</a>
+            </div>
+        </div>
+    </nav>
+
+    <section class="relative min-h-screen flex items-center justify-center pt-20">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/carbon-fibre.png')] opacity-10 -z-10"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-primary/10 via-dark to-dark -z-10"></div>
+
+        <div class="text-center px-6 relative" data-aos="zoom-out">
+            <div class="hidden lg:block absolute -left-48 top-0 opacity-20 text-left font-mono text-[8px] border-l border-primary pl-4">
+                DATA_STREAM: ACTIVE<br>ENCRYPTION: AES_256<br>SECTOR: OFFROAD_LOGIC<br>AUTHOR: TTVLEEROY
+            </div>
+
+            <h1 class="text-6xl md:text-9xl font-black uppercase italic leading-none mb-6 tracking-tighter">
+                Terrain<br/><span class="gradient-text">Intelligence.</span>
+            </h1>
+            
+            <p class="text-gray-400 text-[10px] font-bold uppercase tracking-[0.8em] mb-12">Tactical Off-Road Standard</p>
+
+            <div class="flex justify-center">
+                <button onclick="toggleScanPopup()" class="skew-btn bg-primary text-dark font-black py-4 px-16 text-xs uppercase tracking-[0.3em] hover:bg-white hover:scale-110 transition-all duration-300">
+                    Initialize Scan
+                </button>
+            </div>
+        </div>
+    </section>
+
+    <div id="scan-popup" class="fixed inset-0 z-[200] bg-dark/95 backdrop-blur-xl hidden items-center justify-center p-6">
+        <div class="w-full max-w-lg glass-card p-10 rounded-[3rem] border-primary/30 relative">
+            <div class="text-center mb-8">
+                <h2 class="text-2xl font-black italic uppercase tracking-tighter">Vehicle <span class="text-primary">Enrollment</span></h2>
+                <p class="text-[10px] text-gray-500 font-bold uppercase tracking-[0.4em]">Local Analysis Protocol</p>
+            </div>
+
+            <form id="vehicle-form" class="space-y-6">
+                <div>
+                    <label class="block text-[10px] font-black uppercase tracking-widest text-primary mb-2">Model Designation</label>
+                    <input type="text" id="user-model" placeholder="FORD RANGER" required class="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary transition uppercase font-bold text-white">
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <input type="number" id="user-year" placeholder="2025" required class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary transition font-bold text-white">
+                    <input type="text" id="user-engine" placeholder="V6 DIESEL" class="bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm focus:border-primary transition font-bold text-white">
+                </div>
+                <button type="submit" class="w-full bg-primary text-dark font-black py-4 rounded-xl text-xs uppercase tracking-widest hover:bg-white transition-colors">Begin Intelligence Scan</button>
+                <button type="button" onclick="toggleScanPopup()" class="w-full text-[10px] font-bold text-gray-500 uppercase tracking-widest">Abort Protocol</button>
+            </form>
+        </div>
+    </div>
+
+    <section id="info" class="py-32 relative">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="mb-20 text-center" data-aos="fade-up">
+                <h2 class="text-xs font-black text-primary tracking-[1em] uppercase mb-4">Architecture</h2>
+                <h3 class="text-4xl font-black italic uppercase">System Core</h3>
+            </div>
+ 
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-16">
+                <div class="glass-card p-10 rounded-br-[4rem] rounded-tl-[4rem]" data-aos="fade-up">
+                    <div class="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center mb-6 border border-primary/20">
+                        <i class="fas fa-sliders text-primary"></i>
+                    </div>
+                    <h4 class="text-xl font-black uppercase italic mb-4">Adaptive Comfort</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed font-medium">EPAS motor monitoring at 1kHz frequency to eliminate corrugation feedback and chassis vibration.</p>
+                </div>
+                <div class="glass-card p-10 rounded-br-[4rem] rounded-tl-[4rem]" data-aos="fade-up" data-aos-delay="100">
+                    <div class="w-12 h-12 bg-secondary/10 rounded-full flex items-center justify-center mb-6 border border-secondary/20">
+                        <i class="fas fa-anchor text-secondary"></i>
+                    </div>
+                    <h4 class="text-xl font-black uppercase italic mb-4 text-secondary">Grade Braking</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed font-medium">Automatic gear-set reduction for engine compression braking during steep terrain descents.</p>
+                </div>
+                <div class="glass-card p-10 rounded-br-[4rem] rounded-tl-[4rem]" data-aos="fade-up" data-aos-delay="200">
+                    <div class="w-12 h-12 bg-orange-500/10 rounded-full flex items-center justify-center mb-6 border border-orange-500/20">
+                        <i class="fas fa-link text-orange-500"></i>
+                    </div>
+                    <h4 class="text-xl font-black uppercase italic mb-4 text-orange-500">Diff Locking</h4>
+                    <p class="text-xs text-gray-500 leading-relaxed font-medium">Mechanical axle synchronization providing 100% torque parity to both rear drive wheels.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-20 border-t border-white/5 text-center bg-dark-light">
+        <div class="mb-8 opacity-20">
+            <img src="xclipsehub.png" class="w-12 h-12 mx-auto grayscale" alt="Logo">
+        </div>
+        <div class="text-[10px] text-gray-600 font-black uppercase tracking-[0.5em]">
+            &copy; 2026 <span class="text-primary tracking-normal">OFFROADLOGIC.COM.AU</span> | ★》XCLIPSE NETWORKS《★
+        </div>
+    </footer>
+
+    <div id="offline-indicator" class="fixed bottom-0 left-0 w-full z-[1000]">
+        <div class="bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.4em] py-3 px-6 flex items-center justify-center gap-3 shadow-2xl">
+            <i class="fas fa-plane-slash animate-pulse"></i>
+            <span>System Offline // Accessing Local Tactical Cache</span>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script>
+        AOS.init({ duration: 1000, once: true });
+
+        /* Popup Logic */
+        function toggleScanPopup() {
+            const popup = document.getElementById('scan-popup');
+            popup.classList.toggle('hidden');
+            popup.classList.toggle('flex');
+        }
+
+        /* Form Logic with Redirect Search */
+        document.getElementById('vehicle-form').onsubmit = function(e) {
+            e.preventDefault();
+            const modelInput = document.getElementById('user-model').value.toLowerCase();
+            const yearInput = document.getElementById('user-year').value;
+            
+            const details = { model: modelInput, year: yearInput };
+            localStorage.setItem('active_vehicle', JSON.stringify(details));
+            document.getElementById('vehicle-stat').innerText = `ACTIVE: ${details.year} ${details.model.toUpperCase()}`;
+            
+            this.innerHTML = `<div class="text-primary font-mono text-center animate-pulse py-10 uppercase tracking-widest">Scanning Sector...<br>Matching Manufacturer Logic</div>`;
+            
+            setTimeout(() => {
+                // REDIRECT LOGIC
+                if (modelInput.includes('toyota') || modelInput.includes('hilux') || modelInput.includes('cruiser') || modelInput.includes('prado')) {
+                    window.location.href = "toyota.html";
+                } else if (modelInput.includes('ford') || modelInput.includes('ranger') || modelInput.includes('wildtrak')) {
+                    window.location.href = "Drive Modes.html";
+                } else {
+                    toggleScanPopup();
+                    window.location.href = "#info";
+                }
+            }, 2000);
+        };
+
+        /* Load Stored Vehicle on Start */
+        window.onload = () => {
+            const stored = localStorage.getItem('active_vehicle');
+            if(stored) {
+                const data = JSON.parse(stored);
+                document.getElementById('vehicle-stat').innerText = `ACTIVE: ${data.year} ${data.model.toUpperCase()}`;
+            }
+        };
+
+        /* Network Connectivity Logic */
+        function updateNetworkUI() {
+            const indicator = document.getElementById('offline-indicator');
+            const dot = document.getElementById('online-dot');
+            const netText = document.getElementById('network-text');
+            if (navigator.onLine) {
+                indicator.classList.remove('show-offline');
+                dot.classList.replace('bg-red-600', 'bg-primary');
+                netText.innerText = "Stable // Encrypted";
+                netText.classList.replace('text-red-600', 'text-primary');
+            } else {
+                indicator.classList.add('show-offline');
+                dot.classList.replace('bg-primary', 'bg-red-600');
+                netText.innerText = "Local Cache // Offline";
+                netText.classList.replace('text-primary', 'text-red-600');
+            }
+        }
+        window.addEventListener('online', updateNetworkUI);
+        window.addEventListener('offline', updateNetworkUI);
+        updateNetworkUI();
+
+        /* Service Worker Registration */
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); });
+        }
+    </script>
+</body>
+</html>

@@ -3,22 +3,13 @@
 <head>
     <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Driveline Logic | Offroad Logic</title>
+    <title>Driveline Intelligence | Offroad Logic</title>
 
     <link rel="manifest" href="/manifest.json">
-
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/sw.js');
-    });
-  }
-</script>
-
     <link rel="icon" type="image/x-icon" href="xclipsehub2.png">
     
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     
@@ -27,14 +18,15 @@
         theme: {
           extend: {
             colors: {
-              primary: '#10b981',    /* Emerald */
-              secondary: '#22d3ee',  /* Cyan */
-              tertiary: '#0ea5e9',   /* Blue */
-              dark: '#0f172a',
-              'dark-light': '#1e293b'
+              primary: '#10b981',    /* Tactical Emerald */
+              secondary: '#22d3ee',  /* Cyber Cyan */
+              warning: '#f97316',    /* Bind Orange */
+              dark: '#05080a',
+              'dark-light': '#0f172a'
             },
             fontFamily: {
               sans: ['Montserrat', 'sans-serif'],
+              mono: ['JetBrains Mono', 'monospace']
             }
           }
         }
@@ -42,51 +34,74 @@
     </script>
 
     <style>
+      /* Tactical Scanline Overlay */
+      body::before {
+        content: " ";
+        display: block;
+        position: fixed;
+        top: 0; left: 0; bottom: 0; right: 0;
+        background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.15) 50%), 
+                    linear-gradient(90deg, rgba(255, 0, 0, 0.02), rgba(0, 255, 0, 0.01), rgba(0, 0, 255, 0.02));
+        z-index: 9999;
+        background-size: 100% 4px, 3px 100%;
+        pointer-events: none;
+        opacity: 0.4;
+      }
+
       .glass-card {
-        background: rgba(255, 255, 255, 0.03);
+        background: rgba(15, 23, 42, 0.8);
         backdrop-filter: blur(12px);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(16, 185, 129, 0.1);
         transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
       }
+      
       .glass-card:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(16, 185, 129, 0.4);
+        border-color: rgba(16, 185, 129, 0.5);
         transform: translateY(-5px);
+        box-shadow: 0 0 30px rgba(16, 185, 129, 0.1);
       }
-      .glow-border {
-        position: relative;
-      }
-      .glow-border::after {
-        content: '';
-        position: absolute;
-        inset: -1px;
-        background: linear-gradient(135deg, #10b981, #22d3ee);
-        z-index: -1;
-        border-radius: inherit;
-        opacity: 0.2;
-      }
+
+      #offline-indicator { transform: translateY(100%); transition: transform 0.5s ease; }
+      .show-offline { transform: translateY(0) !important; }
     </style>
 </head>
 <body class="bg-dark text-white font-sans selection:bg-primary/30 overflow-x-hidden">
 
-    <nav class="bg-dark-light/80 backdrop-blur-md shadow-lg fixed w-full z-50 border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-            <a href="index.html" class="text-xl font-bold flex items-center gap-2">
-                <span class="text-primary font-black italic">★》OFFROAD</span> 
-                <span class="text-white font-light tracking-widest uppercase">LOGIC《★</span>
-            </a>
-            <a href="index.html" class="text-[10px] font-black uppercase tracking-[0.2em] hover:text-primary transition flex items-center gap-2">
-                <i class="fas fa-arrow-left"></i> Main Site
+    <div class="fixed top-24 right-6 z-50 hidden md:block">
+        <div class="glass-card p-4 rounded-xl border-l-4 border-primary">
+            <div class="flex items-center gap-3 mb-1">
+                <div id="online-dot" class="w-2 h-2 rounded-full bg-primary animate-ping"></div>
+                <span class="text-[8px] font-black uppercase tracking-widest text-gray-500">Driveline Status</span>
+            </div>
+            <div id="network-text" class="text-[10px] font-mono text-primary font-bold uppercase">System: Online</div>
+        </div>
+    </div>
+    
+<nav class="bg-dark/90 backdrop-blur-md fixed w-full z-[100] border-b border-primary/10">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <a href="index.html" class="text-xl font-bold italic tracking-tighter group">
+            <span class="text-primary font-black group-hover:text-white transition-colors">★》OFFROAD</span> 
+            <span class="text-white font-light uppercase tracking-widest group-hover:text-primary transition-colors">LOGIC《★</span>
+        </a>
+        <div class="flex items-center gap-8">
+            <div class="hidden md:flex gap-10 text-[10px] font-black uppercase tracking-[0.3em]">
+                <a href="#info" class="hover:text-primary transition">Database</a>
+                <a href="driveline.html" class="hover:text-primary transition">Driveline</a>
+                <a href="Drive Modes.html" class="hover:text-primary transition">Modes</a>
+            </div>
+            <a href="https://www.instagram.com/thekidleeroy.m/" target="_blank" class="text-white hover:text-primary transition-all transform hover:scale-110">
+                <i class="fab fa-instagram text-xl"></i>
             </a>
         </div>
-    </nav>
+    </div>
+</nav>
 
     <section class="relative pt-48 pb-20 overflow-hidden text-center">
-        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-primary/10 to-transparent -z-10"></div>
+        <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-full bg-gradient-to-b from-primary/10 via-dark to-dark -z-10"></div>
         <div class="container mx-auto px-6" data-aos="fade-up">
-            <h1 class="text-4xl md:text-7xl font-black mb-4 uppercase italic">Mechanical <span class="text-primary">Driveline</span></h1>
+            <h1 class="text-4xl md:text-7xl font-black mb-4 uppercase italic tracking-tighter">Driveline <span class="text-primary">Intelligence</span></h1>
             <p class="text-gray-400 max-w-2xl mx-auto text-[10px] font-bold uppercase tracking-[0.6em]">
-                Transfer Case States & Torque Distribution Logic
+                Mechanical Setup & Torque Distribution Logic
             </p>
         </div>
     </section>
@@ -97,99 +112,156 @@
                 
                 <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-right">
                     <div class="flex items-center gap-5 mb-6">
-                        <div class="text-5xl font-black text-primary/30">2H</div>
+                        <div class="text-5xl font-black text-primary/20">2H</div>
                         <div>
                             <h3 class="text-xl font-bold uppercase italic tracking-wider text-primary">High Range 2WD</h3>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Seal Surface Optimization</p>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Efficiency Mode</p>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                        Power is delivered exclusively to the rear axle. The front hubs are disconnected to reduce mechanical drag and parasitic loss, maximizing fuel efficiency and minimizing driveline vibration on bitumen.
+                    <p class="text-xs text-gray-400 leading-relaxed mb-6">
+                        Power delivered exclusively to the rear axle. Disconnects front hubs to minimize mechanical drag and optimize fuel efficiency on bitumen.
                     </p>
                     <div class="bg-white/5 rounded-xl p-4 border-l-2 border-primary">
-                        <span class="text-[10px] font-bold text-primary uppercase block mb-1">Logic Application</span>
-                        <p class="text-[10px] text-gray-500">Standard highway cruising and dry city driving.</p>
+                        <span class="text-[10px] font-bold text-primary uppercase block mb-1">Tactical Setup</span>
+                        <p class="text-[10px] text-gray-500 font-mono">Pressure: 35-38 PSI // Use: Highway Cruising</p>
                     </div>
                 </div>
 
                 <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-left">
                     <div class="flex items-center gap-5 mb-6">
-                        <div class="text-5xl font-black text-secondary/30">4A</div>
+                        <div class="text-5xl font-black text-secondary/20">4A</div>
                         <div>
                             <h3 class="text-xl font-bold uppercase italic tracking-wider text-secondary">4WD Automatic</h3>
-                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Active Torque On-Demand</p>
+                            <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Active Torque-On-Demand</p>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                        Utilises an electronically controlled clutch to monitor wheel slip. Torque is sent to the front wheels only when needed. Safe for all surfaces, including high-traction sealed roads.
+                    <p class="text-xs text-gray-400 leading-relaxed mb-6">
+                        Electronic clutch pack monitors slip and sends torque forward as needed. Safe for all sealed surfaces. Standard for variable weather conditions.
                     </p>
                     <div class="bg-white/5 rounded-xl p-4 border-l-2 border-secondary">
-                        <span class="text-[10px] font-bold text-secondary uppercase block mb-1">Logic Application</span>
-                        <p class="text-[10px] text-gray-500">Variable weather, wet roads, and light gravel tracks.</p>
+                        <span class="text-[10px] font-bold text-secondary uppercase block mb-1">Tactical Setup</span>
+                        <p class="text-[10px] text-gray-500 font-mono">Mode: Normal // Use: Wet Bitumen & Variable Roads</p>
                     </div>
                 </div>
 
                 <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-right">
                     <div class="flex items-center gap-5 mb-6">
-                        <div class="text-5xl font-black text-tertiary/30">4H</div>
+                        <div class="text-5xl font-black text-white/10">4H</div>
                         <div>
-                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-tertiary">High Range 4WD</h3>
+                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-white">High Range 4WD</h3>
                             <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Locked 50:50 Distribution</p>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                        Mechanically locks the front and rear driveshafts together. This ensures a consistent 50% torque split between axles. Not for use on pavement as it causes driveline "binding" during turns.
+                    <p class="text-xs text-gray-400 leading-relaxed mb-6">
+                        Mechanically locks front and rear driveshafts together. Essential for soft terrain to maintain constant rotational momentum. 
                     </p>
-                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-tertiary">
-                        <span class="text-[10px] font-bold text-tertiary uppercase block mb-1">Logic Application</span>
-                        <p class="text-[10px] text-gray-500">Snow, loose dirt, and consistent off-road surfaces.</p>
+                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-white/20">
+                        <span class="text-[10px] font-bold text-white uppercase block mb-1">Tactical Setup</span>
+                        <p class="text-[10px] text-gray-500 font-mono">Pressure: 15-18 PSI // Mode: Sand // TC: OFF</p>
                     </div>
                 </div>
 
                 <div class="glass-card p-10 rounded-[2.5rem]" data-aos="fade-left">
                     <div class="flex items-center gap-5 mb-6">
-                        <div class="text-5xl font-black text-orange-500/30">4L</div>
+                        <div class="text-5xl font-black text-warning/20">4L</div>
                         <div>
-                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-orange-500">Low Range 4WD</h3>
+                            <h3 class="text-xl font-bold uppercase italic tracking-wider text-warning">Low Range 4WD</h3>
                             <p class="text-[10px] text-gray-500 font-bold uppercase tracking-widest">Torque Multiplication Logic</p>
                         </div>
                     </div>
-                    <p class="text-sm text-gray-400 leading-relaxed mb-6">
-                        Engages a secondary gear set in the transfer case to multiply torque by a ratio (typically 2.5:1 or higher). Used for high-torque, low-speed maneuvers. Requires vehicle to be in Neutral to engage.
+                    <p class="text-xs text-gray-400 leading-relaxed mb-6">
+                        Engages planetary gear reduction for maximum low-speed power. Essential for rock crawling and heavy recovery operations. 
                     </p>
-                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-orange-500">
-                        <span class="text-[10px] font-bold text-orange-500 uppercase block mb-1">Logic Application</span>
-                        <p class="text-[10px] text-gray-500">Extreme rock crawling, heavy recovery, and steep inclines.</p>
+                    <div class="bg-white/5 rounded-xl p-4 border-l-2 border-warning">
+                        <span class="text-[10px] font-bold text-warning uppercase block mb-1">Tactical Setup</span>
+                        <p class="text-[10px] text-gray-500 font-mono">Rear Locker: ENGAGED // Neutral to Shift</p>
                     </div>
                 </div>
 
+            </div>
+        </div>
+    </section>
+
+    <section class="py-20 bg-dark-light/10">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-xs font-black text-primary tracking-[0.5em] uppercase mb-12 border-l-4 border-primary pl-6">Technical Architecture Settings</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up">
+                    <h4 class="text-lg font-bold uppercase italic mb-4 text-primary">Ford Logic (All Models)</h4>
+                    <ul class="text-[10px] font-mono space-y-3 text-gray-400">
+                        <li><span class="text-white">Sand Protocol:</span> Sand Mode + 4H + Traction Control OFF.</li>
+                        <li><span class="text-white">Descent Protocol:</span> Tow/Haul Mode + Engine Grade Braking Enabled.</li>
+                        <li><span class="text-white">Recommended Sizing:</span> 285/70 R17 (33") for clearance.</li>
+                    </ul>
+                </div>
+                <div class="glass-card p-8 rounded-3xl" data-aos="fade-up" data-aos-delay="100">
+                    <h4 class="text-lg font-bold uppercase italic mb-4 text-secondary">Toyota Logic (All Models)</h4>
+                    <ul class="text-[10px] font-mono space-y-3 text-gray-400">
+                        <li><span class="text-white">Rock Protocol:</span> 4L + Rock Mode + Rear Diff Lock ENGAGED.</li>
+                        <li><span class="text-white">Mud Protocol:</span> Mud/Sand Mode + Crawl Control (Level 3).</li>
+                        <li><span class="text-white">Recommended Sizing:</span> 265/70 R17 (Stock Articulation).</li>
+                    </ul>
+                </div>
             </div>
         </div>
     </section>
 
     <section class="py-20">
         <div class="max-w-4xl mx-auto px-6">
-            <div class="glass-card p-8 border-red-500/20 bg-red-500/5 rounded-3xl" data-aos="zoom-in">
+            <div class="glass-card p-8 border-warning/20 bg-warning/5 rounded-3xl" data-aos="zoom-in">
                 <div class="flex items-center gap-4 mb-4">
-                    <i class="fas fa-triangle-exclamation text-red-500"></i>
-                    <h4 class="text-xs font-black uppercase tracking-widest text-red-500">Technical Alert: Driveline Bind</h4>
+                    <i class="fas fa-triangle-exclamation text-warning animate-pulse"></i>
+                    <h4 class="text-xs font-black uppercase tracking-widest text-warning">Driveline Bind Alert</h4>
                 </div>
-                <p class="text-xs text-gray-500 leading-relaxed">
-                    Operating in <strong class="text-white">4H</strong> or <strong class="text-white">4L</strong> on high-traction surfaces (dry bitumen) forces wheels to rotate at the same speed. During turns, inner and outer wheels must travel different distances; if locked, the drivetrain absorbs this stress, leading to potential gear failure and tire scrubbing.
+                <p class="text-[10px] text-gray-500 leading-relaxed uppercase tracking-widest">
+                    Using <strong class="text-white">4H</strong> or <strong class="text-white">4L</strong> on high-traction surfaces causes mechanical binding. This stress leads to gear failure and tire scrubbing.
                 </p>
             </div>
         </div>
     </section>
 
-    <footer class="py-12 text-center opacity-50">
-        <p class="text-[10px] text-gray-500 tracking-[0.6em] uppercase">
-            Developed for <span class="text-primary font-bold">OFFROADLOGIC.COM.AU</span>
+    <footer class="py-12 text-center opacity-40">
+        <p class="text-[8px] text-gray-500 tracking-[0.6em] uppercase">
+            System Logic by <span class="text-primary font-bold">ttvleeroy</span> // OffroadLogic.com.au
         </p>
     </footer>
+
+    <div id="offline-indicator" class="fixed bottom-0 left-0 w-full z-[1000]">
+        <div class="bg-red-600 text-white text-[10px] font-black uppercase tracking-[0.4em] py-3 px-6 flex items-center justify-center gap-3 shadow-2xl">
+            <i class="fas fa-plane-slash animate-pulse"></i>
+            <span>Offline Protocol: Accessing Local Mechanical Cache</span>
+        </div>
+    </div>
 
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script>
         AOS.init({ duration: 1000, once: true });
+
+        /* Connection Logic */
+        const indicator = document.getElementById('offline-indicator');
+        const dot = document.getElementById('online-dot');
+        const netText = document.getElementById('network-text');
+
+        function updateStatus() {
+            if (navigator.onLine) {
+                indicator.classList.remove('show-offline');
+                dot.classList.replace('bg-red-600', 'bg-primary');
+                netText.innerText = "System: Online";
+                netText.classList.replace('text-red-600', 'text-primary');
+            } else {
+                indicator.classList.add('show-offline');
+                dot.classList.replace('bg-primary', 'bg-red-600');
+                netText.innerText = "System: Offline";
+                netText.classList.replace('text-primary', 'text-red-600');
+            }
+        }
+        window.addEventListener('online', updateStatus);
+        window.addEventListener('offline', updateStatus);
+        updateStatus();
+
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => { navigator.serviceWorker.register('/sw.js'); });
+        }
     </script>
 </body>
 </html>
